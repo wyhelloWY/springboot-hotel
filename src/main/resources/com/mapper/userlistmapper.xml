@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxau.hotelsystem.dao.UserDao">
+    <resultMap id="BaseResultMap" type="com.jxau.hotelsystem.pojo.DO.UserList" >
+        <result column="user_id" property="userId" />
+        <result column="user_name" property="userName" />
+        <result column="user_pass" property="userPass" />
+        <result column="user_card_id" property="userCardId" />
+        <result column="user_type" property="userType" />
+        <result column="user_realname" property="userRealname" />
+        <result column="user_authentication" property="userAuthentication" />
+        <result column="user_login_date" property="userLoginDate" />
+        <result column="user_register_date" property="userRegisterDate" />
+        <result column="user_phone" property="userPhone" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                user_id,
+                user_name,
+                user_pass,
+                user_card_id,
+                user_type,
+                user_realname,
+                user_authentication,
+                user_login_date,
+                user_register_date,
+                user_phone
+    </sql>
+
+    <insert id="insertUserList"  parameterType="com.jxau.hotelsystem.pojo.DO.UserList">
+        INSERT INTO user_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test ='null != userName'>
+                user_name,
+            </if>
+            <if test ='null != userPass'>
+                user_pass,
+            </if>
+            <if test ='null != userCardId'>
+                user_card_id,
+            </if>
+            <if test ='null != userType'>
+                user_type,
+            </if>
+            <if test ='null != userRealname'>
+                user_realname,
+            </if>
+            <if test ='null != userAuthentication'>
+                user_authentication,
+            </if>
+            <if test ='null != userLoginDate'>
+                user_login_date,
+            </if>
+            <if test ='null != userRegisterDate'>
+                user_register_date,
+            </if>
+            <if test ='null != userPhone'>
+                user_phone
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+
+            <if test ='null != userName'>
+                #{userName},
+            </if>
+            <if test ='null != userPass'>
+                #{userPass},
+            </if>
+            <if test ='null != userCardId'>
+                #{userCardId},
+            </if>
+            <if test ='null != userType'>
+                #{userType},
+            </if>
+            <if test ='null != userRealname'>
+                #{userRealname},
+            </if>
+            <if test ='null != userAuthentication'>
+                #{userAuthentication},
+            </if>
+            <if test ='null != userLoginDate'>
+                #{userLoginDate},
+            </if>
+            <if test ='null != userRegisterDate'>
+                #{userRegisterDate},
+            </if>
+            <if test ='null != userPhone'>
+                #{userPhone}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteUserList" >
+        DELETE FROM user_list
+        WHERE user_id = #{userId}
+    </delete>
+
+    <update id="updateUserList" parameterType="com.jxau.hotelsystem.pojo.DO.UserList">
+        UPDATE user_list
+        <set>
+            <if test ='null != userName'>user_name = #{userName},</if>
+            <if test ='null != userPass'>user_pass = #{userPass},</if>
+            <if test ='null != userCardId'>user_card_id = #{userCardId},</if>
+            <if test ='null != userType'>user_type = #{userType},</if>
+            <if test ='null != userRealname'>user_realname = #{userRealname},</if>
+            <if test ='null != userAuthentication'>user_authentication = #{userAuthentication},</if>
+            <if test ='null != userLoginDate'>user_login_date = #{userLoginDate},</if>
+            <if test ='null != userRegisterDate'>user_register_date = #{userRegisterDate},</if>
+            <if test ='null != userPhone'>user_phone = #{userPhone}</if>
+        </set>
+        WHERE user_id = #{userId}
+    </update>
+
+
+    <select id="selectUserListByUserPhone" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user_list
+        WHERE user_phone = #{userPhone}
+    </select>
+
+    <select id="selectUserListByUserId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user_list
+        WHERE user_id = #{userId}
+    </select>
+    <select id="selectPage" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user_list
+
+    </select>
+
+    <select id="selectAllByMember" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user_list
+        WHERE user_type = 3
+    </select>
+    <select id="selectUserByKey" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user_list
+        WHERE user_name = #{userKey} or user_phone = #{userKey}
+    </select>
+
+    <select id="listByKeyWord" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM user_list
+        WHERE user_name LIKE concat('%',#{key},'%') or user_phone LIKE concat('%',#{key},'%') or user_card_id LIKE concat('%',#{key},'%')
+    </select>
+    <select id="selectPhoneExist" resultType="java.lang.Integer">
+        SELECT count(*)
+        FROM user_list
+        WHERE user_phone = #{userPhone}
+    </select>
+</mapper>

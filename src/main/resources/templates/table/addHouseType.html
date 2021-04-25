@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>添加</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="lib/layui-v2.5.5/css/layui.css" media="all" th:href="@{/layuistate/lib/layui-v2.5.5/css/layui.css}">
+    <link rel="stylesheet" href="../css/public.css" th:href="@{/layuistate/css/public.css}" media="all">
+    <style>
+        body {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="layui-form layuimini-form">
+
+
+    <div class="layui-form-item">
+        <label class="layui-form-label">房型姓名</label>
+        <div class="layui-input-inline">
+            <input type="text" class="layui-input" id="houseLayoutName" name="houseLayoutName" >
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">房间床数</label>
+        <div class="layui-input-inline">
+            <select  class="form-control" name="houseLayoutBed" id="houseLayoutBed" onblur="">
+                <option value="1">一张单人床</option>
+                <option value="2">一张大床</option>
+                <option value="3">两张单人床</option>
+                <option value="4">两张大床</option>
+                <option value="5">三张单人床</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">房间人数</label>
+        <div class="layui-input-inline">
+            <select  class="form-control" name="houseLayoutPeople" id="houseLayoutPeople" onblur="">
+                <option value="1">一人房</option>
+                <option value="2">二人房</option>
+                <option value="3">三人房</option>
+                <option value="4">四人房</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">类型说明</label>
+        <div class="layui-input-inline">
+            <textarea  class="layui-textarea" id="houseLayoutExplanation" name="houseLayoutExplanation" ></textarea>
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block">
+            <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">提交</button>
+        </div>
+    </div>
+</div>
+<script src="lib/layui-v2.5.5/layui.js" th:src="@{/layuistate/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+<script>
+    layui.use(['form'], function () {
+        var form = layui.form,
+            layer = layui.layer,
+
+            $ = layui.$;
+        //监听提交
+        form.on('submit(saveBtn)', function (data) {
+            if($('#houseLayoutName').val()!=null&&$('#houseLayoutName').val()!=""
+                &&$('#houseLayoutBed').val()!=null &&$('#houseLayoutBed').val()!=""
+                &&$('#houseLayoutPeople').val()!=null &&$('#houseLayoutPeople').val()!=""
+                &&$('#houseLayoutExplanation').val()!=null &&$('#houseLayoutExplanation').val()!=""){
+                $.ajax({
+                    url: '/houseLayoutApi/addHouseLayout',
+                    type: "POST",
+                    data:{
+                        houseLayoutName:$('#houseLayoutName').val(),
+                        houseLayoutBed:$('#houseLayoutBed').val(),
+                        houseLayoutPeople:$('#houseLayoutPeople').val(),
+                        houseLayoutExplanation:$('#houseLayoutExplanation').val()
+                    },
+                    success:function () {
+                        layer.msg("添加成功");
+                        var iframeIndex = parent.layer.getFrameIndex(window.name);
+                        parent.layer.close(iframeIndex);
+                        window.parent.location.reload();
+                    }
+                });
+            }else{
+                layer.msg("请先填充数据再进行提交");
+            }
+        });
+
+    });
+    layui.use('laydate', function() {
+        var laydate = layui.laydate;
+        laydate.render({
+            elem: '#backup_date'
+            ,type: 'datetime'
+
+        });
+
+    })
+
+</script>
+</body>
+</html>

@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>酒店管理系统</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" th:href="@{/layuistate/lib/layui-v2.5.5/css/layui.css}" media="all">
+    <link rel="stylesheet" href="../css/public.css" th:href="@{/layuistate/css/public.css}"media="all">
+    <link rel="stylesheet" href="../css/blog.css" th:href="@{/layuistate/css/blog.css}"media="all">
+
+</head>
+<body>
+<ul class="layui-nav" >
+    <li class="layui-nav-item ">
+        <a href="">酒店管理系统<span class="layui-badge">1.0</span></a>
+    </li>
+    <li class="layui-nav-item ">
+        <a href="">&ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;
+            &ensp;        &ensp;        &ensp;        &ensp;        &ensp;
+            &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;
+            &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;
+            &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;
+            &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;
+            &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;
+            &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;
+            &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;      &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;
+            &ensp;        &ensp;        &ensp;        &ensp;        &ensp;
+            &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;
+            &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;
+            &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;        &ensp;
+            &ensp;        &ensp;        &ensp;        &ensp;        &ensp;  </a>
+    </li>
+    <li class="layui-nav-item">
+        <a th:href="@{/page/houseIndex}">预定客房<span class="layui-badge layui-bg-black"></span></a>
+    </li>
+    <li class="layui-nav-item">
+        <a th:href="@{/page/orderIndex}">我的订单<span class="layui-badge layui-bg-black"></span></a>
+    </li>
+    <li class="layui-nav-item">
+        <a th:href="@{/page/houseTypeIndex}">客房介绍<span class="layui-badge layui-bg-black"></span></a>
+    </li>
+    <li class="layui-nav-item">
+        <a href="javascript:;" > <span class="layui-btn layui-btn-normal"th:text="${session.userList.userName}"></span></a>
+    <li class="layui-nav-item" lay-unselect="">
+<!--        <a href="javascript:;"><img src="//t.cn/RCzsdCq" class="layui-nav-img" th:text="${session.user.userName}"></a>-->
+        <dl class="layui-nav-child">
+            <dd><a th:href="@{/page/index}">退出</a></dd>
+        </dl>
+    </li>
+
+</ul>
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: -40px;text-align: center">
+    <legend>房源列表</legend>
+</fieldset>
+
+<div class="layuimini-container">
+    <div class="layuimini-main">
+
+
+
+        <script type="text/html" id="toolbarDemo">
+
+        </script>
+
+        <table class="layui-hide" id="currentTableId" lay-filter="currentTableFilter"></table>
+
+        <script type="text/html" id="currentTableBar">
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="add">预定</a>
+            <a class="layui-btn layui-btn-normal layui-btn-xs data-count-edit" lay-event="look">查看</a>
+        </script>
+
+    </div>
+</div>
+<script src="js/jquery.min.js" th:src="@{/layuistate/lib/jquery-3.4.1/jquery-3.4.1.min.js}"></script>
+<script src="lib/layui-v2.5.5/layui.js" th:src="@{/layuistate/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+<script type="text/javascript" src="js/xadmin.js" th:src="@{/layuistate/js/xadmin.js}"></script>
+<script>
+    layui.use(['form', 'table'], function () {
+        var $ = layui.jquery,
+            form = layui.form,
+            table = layui.table;
+        var active = {
+            setTop: function(){
+                var that = this;
+                //多窗口模式，层叠置顶
+                layer.open({
+                    type: 2 //此处以iframe举例
+                    ,title: '当你选择该窗体时，即会在最顶端'
+                    ,area: ['390px', '260px']
+                    ,shade: 0
+                    ,maxmin: true
+                    ,offset: [ //为了演示，随机坐标
+                        Math.random()*($(window).height()-300)
+                        ,Math.random()*($(window).width()-390)
+                    ]
+                    ,content: '//layer.layui.com/test/settop.html'
+                    ,btn: ['继续弹出', '全部关闭'] //只是为了演示
+                    ,yes: function(){
+                        $(that).click();
+                    }
+                    ,btn2: function(){
+                        layer.closeAll();
+                    }
+
+                    ,zIndex: layer.zIndex //重点1
+                    ,success: function(layero){
+                        layer.setTop(layero); //重点2
+                    }
+                });
+            }
+            ,notice: function(){
+                //示范一个公告层
+                layer.open({
+                    type: 1
+                    ,title: false //不显示标题栏
+                    ,closeBtn: false
+                    ,area: '300px;'
+                    ,shade: 0.8
+                    ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,btn: ['火速围观', '残忍拒绝']
+                    ,btnAlign: 'c'
+                    ,moveType: 1 //拖拽模式，0或者1
+                    ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">你知道吗？亲！<br>layer ≠ layui<br><br>layer只是作为Layui的一个弹层模块，由于其用户基数较大，所以常常会有人以为layui是layerui<br><br>layer虽然已被 Layui 收编为内置的弹层模块，但仍然会作为一个独立组件全力维护、升级。<br><br>我们此后的征途是星辰大海 ^_^</div>'
+                    ,success: function(layero){
+                        var btn = layero.find('.layui-layer-btn');
+                        btn.find('.layui-layer-btn0').attr({
+                            href: 'http://www.layui.com/'
+                            ,target: '_blank'
+                        });
+                    }
+                });
+            }
+        };
+        table.render({
+            elem: '#currentTableId',
+            url: '/houseApi/findHousePage',
+            xhrFields: {
+                withCredentials: true
+            },
+            method:'get',
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            cols: [
+                [{field: 'houseId', width: 120, title: '序号',hide:true},
+                    {field: 'houseNumber', width: 120, title: '客房编号', sort: true},
+                    {field: 'houseExplanation', width: 360, title: '客房说明'},
+                    {field: 'houseMoney', width: 240, title: '客房金额', sort: true},
+                    {field: 'houseMemberMoney', width: 240, title: '会员金额', sort: true},
+                    {field: 'houseType', width: 120, title: '客房类型编号'},
+                    {field: 'houseTypeByInt', width: 240, title: '客房状态', sort: true},
+                    {title: '操作', minWidth: 150, toolbar: '#currentTableBar', align: "center"}
+                ]
+            ],
+            // limits: [10, 15, 20, 25, 50, 100],
+            limit: 10,
+            page: true,
+            skin: 'line',
+            parseData:function (res) {
+                console.log(res);
+                return{
+                    "code":0,
+                    "msg":"",
+                    "count":res.length,
+                    "data":res.dataArray
+                };
+            }
+            // //成功回调函数
+            // parseData: function (res) {
+            //     console.log("hello");
+            //     console.log(res.data);
+            // }
+        });
+
+
+        //点击查询按钮 多条件查询，重载表格
+        $('#searchBtnByKey').on('click', function() {
+            console.log( $('#key_word').val());
+            table.reload('currentTableId', {
+                method : 'post',
+                where : {
+                    key : $('#key_word').val(),
+                },
+                page : {
+                    curr : 1
+                }
+            });
+            return false;
+        });
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            var result = JSON.stringify(data.field);
+            layer.alert(result, {
+                title: '最终的搜索信息',
+
+            });
+
+            //执行搜索重载
+            table.reload('currentTableId', {
+                page: {
+                    curr: 1
+                }
+                , where: {
+                    searchParams: result
+                }
+            }, 'data');
+            console.log(data)
+            return false;
+        });
+
+        /**
+         * toolbar监听事件
+         */
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            if (obj.event === 'add') {  // 监听添加操作
+                var url = "/msxd/user/toAdd";
+                var index = layer.open({
+                    title: '添加',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin:true,
+                    shadeClose: true,
+                    area: ['40%', '40%'],
+                    content: url,
+                });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+            } else if (obj.event === 'delete') {  // 监听删除操作
+                var checkStatus = table.checkStatus('currentTableId')
+                    , data = checkStatus.data;
+                layer.alert(JSON.stringify(data));
+                alert(JSON.stringify(data))
+            }
+        });
+
+
+
+        table.on('tool(currentTableFilter)', function (obj) {
+            var data = obj.data;
+
+            if (obj.event === 'edit') {
+                layer.open({
+                    type: 1
+                    ,title: false //不显示标题栏
+                    ,closeBtn: false
+                    ,area: '300px;'
+                    ,shade: 0.8
+                    ,id: 'LAY_layuipro' //设定一个id，防止重复弹出
+                    ,btn: ['火速查看', '题目太难']
+                    ,btnAlign: 'c'
+                    ,moveType: 1 //拖拽模式，0或者1
+                    ,content: '<div style="padding: 50px; line-height: 22px; background-color: #393D49; color: #fff; font-weight: 300;">'+obj.data.subjectContent+'<br><br></div>'
+                    ,success: function(layero){
+                        var btn = layero.find('.layui-layer-btn');
+                        btn.find('.layui-layer-btn0').attr({
+                            href: 'http://www.layui.com/'
+                            ,target: '_blank'
+                        });
+                    }
+                });
+                // layer.confirm('确认要编辑吗？',function(index){
+                //     var url = "/user/userUpdate?id="+obj.data.id;
+                //     // alert(act_id);
+                //     x_admin_show('修改用户',url,600,650);
+                // });
+                $(window).on("resize", function () {
+                    layer.full(index);
+                });
+                return false;
+            } else if (obj.event === 'delete') {
+                layer.confirm('确认删除本条记录吗?', { btn: ['是','否'],btn1: function(index){
+                        // alert(obj.data.log_id);
+                        $.ajax({
+                            url: '/subject/deleteSubject',
+                            type: "POST",
+                            data:{"subjectId":obj.data.id},
+                            success:function () {
+                                layer.msg("删除成功");
+                                layer.close(index);
+                                window.location.reload();
+                            }
+                        });
+
+                    },
+                    btn2: function(index){
+                        layer.msg("取消");
+                    }
+
+                })
+            }else if (obj.event === 'add') {  // 监听添加操作
+                if (obj.data.houseTypeByInt == "满房"){
+                    alert("客房已满 无法预定");
+                }else{
+                    var url = "/houseApi/selectHouseOrderById?houseId="+obj.data.houseId;
+                    var index = layer.open({
+                        title: '预定',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin:true,
+                        shadeClose: true,
+                        area: ['60%', '60%'],
+                        content: url,
+                    });
+                    $(window).on("resize", function () {
+                        layer.full(index);
+                    });
+                }
+
+
+            }
+
+        });
+
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,69 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "/page/roomManage"
+  },
+  "logoInfo": {
+    "title": "酒店管理系统",
+    "image": "/msxd/layuistate/images/nd.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "常规管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "child": [
+
+        {
+          "title": "房间管理",
+          "href": "/page/roomManage",
+          "icon": "fa fa-window-maximize",
+          "target": "_self"
+        },
+        {
+          "title": "房型管理",
+          "href": "/page/roomTypeManage",
+          "icon": "fa fa-gears",
+          "target": "_self"
+        },
+        {
+          "title": "用户管理",
+          "href": "/page/userManage",
+          "icon": "fa fa-file-text",
+          "target": "_self"
+        },
+        {
+          "title": "会员管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self",
+          "child": [
+            {
+              "title": "会员用户",
+              "href": "/page/memberManage",
+              "icon": "fa fa-navicon",
+              "target": "_self"
+            }
+          ]
+        },
+        {
+          "title": "订单管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self",
+          "child": [
+            {
+              "title": "订单管理",
+              "href": "/page/userOrderManage",
+              "icon": "fa fa-navicon",
+              "target": "_self"
+            }
+          ]
+        }
+      ]
+    }
+
+  ]
+}

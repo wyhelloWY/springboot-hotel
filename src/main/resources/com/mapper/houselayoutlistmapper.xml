@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxau.hotelsystem.dao.HouseLayoutDao">
+    <resultMap id="BaseResultMap" type="com.jxau.hotelsystem.pojo.DO.HouseLayoutList" >
+        <result column="house_layout_id" property="houseLayoutId" />
+        <result column="house_layout_name" property="houseLayoutName" />
+        <result column="house_layout_bed" property="houseLayoutBed" />
+        <result column="house_layout_people" property="houseLayoutPeople" />
+        <result column="house_layout_explanation" property="houseLayoutExplanation" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                house_layout_id,
+                house_layout_name,
+                house_layout_bed,
+                house_layout_people,
+                house_layout_explanation
+    </sql>
+
+    <insert id="insertHouseLayoutList" parameterType="com.jxau.hotelsystem.pojo.DO.HouseLayoutList">
+        INSERT INTO house_layout_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != houseLayoutName'>
+                house_layout_name,
+            </if>
+            <if test ='null != houseLayoutBed'>
+                house_layout_bed,
+            </if>
+            <if test ='null != houseLayoutPeople'>
+                house_layout_people,
+            </if>
+            <if test ='null != houseLayoutExplanation'>
+                house_layout_explanation
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != houseLayoutName'>
+                #{houseLayoutName},
+            </if>
+            <if test ='null != houseLayoutBed'>
+                #{houseLayoutBed},
+            </if>
+            <if test ='null != houseLayoutPeople'>
+                #{houseLayoutPeople},
+            </if>
+            <if test ='null != houseLayoutExplanation'>
+                #{houseLayoutExplanation}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteHouseLayoutList" >
+        DELETE FROM house_layout_list
+        WHERE house_layout_id = #{houseLayoutId}
+    </delete>
+
+    <update id="updateHouseLayoutList" parameterType="com.jxau.hotelsystem.pojo.DO.HouseLayoutList">
+        UPDATE house_layout_list
+        <set>
+
+            <if test ='null != houseLayoutName'>house_layout_name = #{houseLayoutName},</if>
+            <if test ='null != houseLayoutBed'>house_layout_bed = #{houseLayoutBed},</if>
+            <if test ='null != houseLayoutPeople'>house_layout_people = #{houseLayoutPeople},</if>
+            <if test ='null != houseLayoutExplanation'>house_layout_explanation = #{houseLayoutExplanation}</if>
+        </set>
+        WHERE house_layout_id = #{houseLayoutId}
+    </update>
+
+
+    <select id="selectHouseLayoutList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM house_layout_list
+        WHERE house_layout_id = #{houseLayoutId}
+    </select>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM house_layout_list
+
+    </select>
+
+
+    <select id="listAllHouseLayoutByKey" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM house_layout_list
+        where house_layout_name LIKE concat('%',#{key},'%') or house_layout_explanation LIKE concat('%',#{key},'%')
+    </select>
+
+    <select id="listAllHouseLayoutList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM house_layout_list
+    </select>
+</mapper>
