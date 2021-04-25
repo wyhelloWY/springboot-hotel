@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxau.hotelsystem.dao.OrderDao">
+    <resultMap id="BaseResultMap" type="com.jxau.hotelsystem.pojo.DO.OrderList" >
+        <result column="order_id" property="orderId" />
+        <result column="order_people_id" property="orderPeopleId" />
+        <result column="order_house_id" property="orderHouseId" />
+        <result column="order_date" property="orderDate" />
+        <result column="order_start_date" property="orderStartDate" />
+        <result column="order_end_date" property="orderEndDate" />
+        <result column="order_people_number" property="orderPeopleNumber" />
+        <result column="order_type" property="orderType" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                order_id,
+                order_people_id,
+                order_house_id,
+                order_date,
+                order_start_date,
+                order_end_date,
+                order_people_number,
+                order_type
+    </sql>
+
+    <insert id="insertOrderList"  parameterType="com.jxau.hotelsystem.pojo.DO.OrderList">
+        INSERT INTO order_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != orderId'>
+                order_id,
+            </if>
+            <if test ='null != orderPeopleId'>
+                order_people_id,
+            </if>
+            <if test ='null != orderHouseId'>
+                order_house_id,
+            </if>
+            <if test ='null != orderDate'>
+                order_date,
+            </if>
+            <if test ='null != orderStartDate'>
+                order_start_date,
+            </if>
+            <if test ='null != orderEndDate'>
+                order_end_date,
+            </if>
+            <if test ='null != orderPeopleNumber'>
+                order_people_number,
+            </if>
+            <if test ='null != orderType'>
+                order_type
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != orderId'>
+                #{orderId},
+            </if>
+            <if test ='null != orderPeopleId'>
+                #{orderPeopleId},
+            </if>
+            <if test ='null != orderHouseId'>
+                #{orderHouseId},
+            </if>
+            <if test ='null != orderDate'>
+                #{orderDate},
+            </if>
+            <if test ='null != orderStartDate'>
+                #{orderStartDate},
+            </if>
+            <if test ='null != orderEndDate'>
+                #{orderEndDate},
+            </if>
+            <if test ='null != orderPeopleNumber'>
+                #{orderPeopleNumber},
+            </if>
+            <if test ='null != orderType'>
+                #{orderType}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteOrderList" >
+        DELETE FROM order_list
+        WHERE order_id = #{orderId}
+    </delete>
+
+    <update id="updateOrderList" parameterType="com.jxau.hotelsystem.pojo.DO.OrderList">
+        UPDATE order_list
+        <set>
+
+            <if test ='null != orderPeopleId'>order_people_id = #{orderPeopleId},</if>
+            <if test ='null != orderHouseId'>order_house_id = #{orderHouseId},</if>
+            <if test ='null != orderDate'>order_date = #{orderDate},</if>
+            <if test ='null != orderStartDate'>order_start_date = #{orderStartDate},</if>
+            <if test ='null != orderEndDate'>order_end_date = #{orderEndDate},</if>
+            <if test ='null != orderPeopleNumber'>order_people_number = #{orderPeopleNumber},</if>
+            <if test ='null != orderType'>order_type = #{orderType}</if>
+        </set>
+        WHERE order_id = #{orderId}
+    </update>
+
+
+    <select id="selectOrderList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM order_list
+        WHERE order_id = #{orderId}
+    </select>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM order_list
+    </select>
+    <select id="selectByOrderPeopleId" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM order_list
+        WHERE order_people_id = #{orderPeopleId} and order_type = 1
+    </select>
+
+</mapper>

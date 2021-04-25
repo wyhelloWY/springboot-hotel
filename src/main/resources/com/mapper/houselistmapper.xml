@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxau.hotelsystem.dao.HouseDao">
+    <resultMap id="BaseResultMap" type="com.jxau.hotelsystem.pojo.DO.HouseList" >
+        <result column="house_id" property="houseId" />
+        <result column="house_number" property="houseNumber" />
+        <result column="house_status" property="houseStatus" />
+        <result column="house_explanation" property="houseExplanation" />
+        <result column="house_money" property="houseMoney" />
+        <result column="house_member_money" property="houseMemberMoney" />
+        <result column="house_type" property="houseType" />
+        <result column="house_image" property="houseImage" />
+        <result column="house_date" property="houseDate" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                house_id,
+                house_number,
+                house_status,
+                house_explanation,
+                house_money,
+                house_member_money,
+                house_type,
+                house_image,
+                house_date
+    </sql>
+
+    <insert id="insertHouseList"  parameterType="com.jxau.hotelsystem.pojo.DO.HouseList">
+        INSERT INTO house_list
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != houseId'>
+                house_id,
+            </if>
+            <if test ='null != houseNumber'>
+                house_number,
+            </if>
+            <if test ='null != houseStatus'>
+                house_status,
+            </if>
+            <if test ='null != houseExplanation'>
+                house_explanation,
+            </if>
+            <if test ='null != houseMoney'>
+                house_money,
+            </if>
+            <if test ='null != houseMemberMoney'>
+                house_member_money,
+            </if>
+            <if test ='null != houseType'>
+                house_type,
+            </if>
+            <if test ='null != houseImage'>
+                house_image,
+            </if>
+            <if test ='null != houseDate'>
+                house_date
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != houseId'>
+                #{houseId},
+            </if>
+            <if test ='null != houseNumber'>
+                #{houseNumber},
+            </if>
+            <if test ='null != houseStatus'>
+                #{houseStatus},
+            </if>
+            <if test ='null != houseExplanation'>
+                #{houseExplanation},
+            </if>
+            <if test ='null != houseMoney'>
+                #{houseMoney},
+            </if>
+            <if test ='null != houseMemberMoney'>
+                #{houseMemberMoney},
+            </if>
+            <if test ='null != houseType'>
+                #{houseType},
+            </if>
+            <if test ='null != houseImage'>
+                #{houseImage},
+            </if>
+            <if test ='null != houseDate'>
+                #{houseDate}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteHouseList" >
+        DELETE FROM house_list
+        WHERE house_id = #{houseId}
+    </delete>
+
+    <update id="updateHouseList" parameterType="com.jxau.hotelsystem.pojo.DO.HouseList">
+        UPDATE house_list
+        <set>
+            <if test ='null != houseNumber'>house_number = #{houseNumber},</if>
+            <if test ='null != houseStatus'>house_status = #{houseStatus},</if>
+            <if test ='null != houseExplanation'>house_explanation = #{houseExplanation},</if>
+            <if test ='null != houseMoney'>house_money = #{houseMoney},</if>
+            <if test ='null != houseMemberMoney'>house_member_money = #{houseMemberMoney},</if>
+            <if test ='null != houseType'>house_type = #{houseType},</if>
+            <if test ='null != houseImage'>house_image = #{houseImage},</if>
+            <if test ='null != houseDate'>house_date = #{houseDate}</if>
+        </set>
+        WHERE house_id = #{houseId}
+    </update>
+    <update id="orderHouseList" >
+        UPDATE house_list
+        set house_status = #{houseStatus}
+        WHERE house_id = #{houseId}
+    </update>
+
+    <update id="updateHouseListByNumber" >
+        UPDATE house_list
+        set house_status = #{houseStatus}
+        WHERE house_number = #{houseNumber}
+    </update>
+    <select id="listAllHouseList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM house_list
+    </select>
+
+    <select id="selectPage" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM house_list
+
+    </select>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM house_list
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="pageListCount" resultType="java.lang.Integer">
+        SELECT count(1)
+        FROM house_list
+    </select>
+
+    <select id="selectHouseListInfo" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM house_list
+        WHERE house_id = #{houseId}
+    </select>
+    <select id="listAllHouseListByKey" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM house_list
+        WHERE house_explanation LIKE concat('%',#{key},'%')
+    </select>
+
+</mapper>

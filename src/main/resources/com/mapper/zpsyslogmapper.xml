@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jxau.hotelsystem.dao.SysLogDao">
+
+    <resultMap id="BaseResultMap" type="com.jxau.hotelsystem.pojo.DO.ZpSysLog" >
+        <result column="logger_id" property="loggerId" />
+        <result column="logger_username" property="loggerUsername" />
+        <result column="logger_operation" property="loggerOperation" />
+        <result column="logger_method" property="loggerMethod" />
+        <result column="logger_params" property="loggerParams" />
+        <result column="logger_ip" property="loggerIp" />
+        <result column="logger_date" property="loggerDate" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+                logger_id,
+                logger_username,
+                logger_operation,
+                logger_method,
+                logger_params,
+                logger_ip,
+                logger_date
+    </sql>
+
+    <insert id="insertLog" parameterType="com.jxau.hotelsystem.pojo.DO.ZpSysLog">
+        INSERT INTO sys_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test ='null != loggerUsername'>
+                logger_username,
+            </if>
+            <if test ='null != loggerOperation'>
+                logger_operation,
+            </if>
+            <if test ='null != loggerMethod'>
+                logger_method,
+            </if>
+            <if test ='null != loggerParams'>
+                logger_params,
+            </if>
+            <if test ='null != loggerIp'>
+                logger_ip,
+            </if>
+            <if test ='null != loggerDate'>
+                logger_date
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test ='null != loggerUsername'>
+                #{loggerUsername},
+            </if>
+            <if test ='null != loggerOperation'>
+                #{loggerOperation},
+            </if>
+            <if test ='null != loggerMethod'>
+                #{loggerMethod},
+            </if>
+            <if test ='null != loggerParams'>
+                #{loggerParams},
+            </if>
+            <if test ='null != loggerIp'>
+                #{loggerIp},
+            </if>
+            <if test ='null != loggerDate'>
+                #{loggerDate}
+            </if>
+        </trim>
+    </insert>
+
+<!--    <delete id="delete" >-->
+<!--        DELETE FROM zp_sys_log-->
+<!--        WHERE id = #{id}-->
+<!--    </delete>-->
+
+<!--    <update id="update" parameterType="com.bluedot.zpapp.pojo.DO.ZpSysLog">-->
+<!--        UPDATE zp_sys_log-->
+<!--        <set>-->
+<!--            <if test ='null != loggerId'>logger_id = #{loggerId},</if>-->
+<!--            <if test ='null != loggerUsername'>logger_username = #{loggerUsername},</if>-->
+<!--            <if test ='null != loggerOperation'>logger_operation = #{loggerOperation},</if>-->
+<!--            <if test ='null != loggerMethod'>logger_method = #{loggerMethod},</if>-->
+<!--            <if test ='null != loggerParams'>logger_params = #{loggerParams},</if>-->
+<!--            <if test ='null != loggerIp'>logger_ip = #{loggerIp},</if>-->
+<!--            <if test ='null != loggerDate'>logger_date = #{loggerDate}</if>-->
+<!--        </set>-->
+<!--        WHERE id = #{id}-->
+<!--    </update>-->
+
+
+    <select id="listAllLog" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" />
+        FROM sys_log
+    </select>
+
+
+</mapper>
